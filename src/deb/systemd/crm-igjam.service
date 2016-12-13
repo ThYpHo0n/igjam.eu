@@ -1,0 +1,15 @@
+[Unit]
+Description=igjam
+After=network.target
+
+[Service]
+User=www-data
+ExecStart=/usr/bin/java -Xms1024m -Xmx2048m -server -Djava.security.egd=file:/dev/./urandom -jar /opt/igjam/current --spring.config.location=file:/etc/igjam/application.yml,file:/etc/igjam/credentials.yml
+Type=simple
+Restart=always
+RestartSec=30
+StartLimitInterval=3600
+StartLimitBurst=3
+
+[Install]
+WantedBy=multi-user.target

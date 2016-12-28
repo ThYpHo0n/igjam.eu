@@ -1,0 +1,261 @@
+{% extends "base.html" %}
+{% from "_formhelpers.html" import form_errors %}
+
+{% block breadcrumb %}
+<!-- Breadcrumb Start -->
+<div class="row">
+	<div class="large-12 columns">
+		<ul class="breadcrumb_menu">
+			<li><a href="">Home</a></li>
+			<li class="active"><a href="">Gamescom</a></li>
+		</ul>
+	</div>
+</div>
+<!-- Breadcrumb Stop -->
+{% endblock %}
+
+{% block content %}
+
+<div class="row top-banner">
+	<div class="columns small-12">
+		<div class="space">
+			<h1>INNOGAMES JAM 2016</h1>
+
+			Yay, you made it to our application. Now you only have to answer the following questions to complete your application. If you can’t afford your traveling costs, please fill out the fields for our travel grants. The closing date is the
+			<del>06/30/16 at 18:00h CEST</del>
+			.
+			<strong> We extended the closing date to 07/07/16 at 3 PM PDT / 07/08/16 at 00:00 CEST!</strong> Shortly after this date we will announce the lucky participants who will then be able to get their ticket for the price of 50€. We are looking forward to meeting you.<br>
+			Good Luck!
+		</div>
+	</div>
+</div>
+<!-- 2 Column -->
+<div class="row">
+	<div class="columns">
+		<div>
+			<h2>Apply</h2>
+
+			{% if current_user.is_authenticated == false %}
+			<h4>Step 1 - Create an account</h4>
+
+			{% for field in register_form.errors %}
+			{% for error in register_form.errors[field] %}
+			<div data-alert class="alert-box success radius">
+				{{error}}
+			</div>
+			{% endfor %}
+			{% endfor %}
+
+			<form action="{{ url_for('gamescom') }}" method="post" class="register">
+				<p>If you already have an account, please <a href="{{ url_for('login') }}">login</a> before proceed.</p>
+				{{ register_form.hidden_tag() }}
+				<div class="row">
+					<div class="large-4 columns">
+						{{ register_form.username.label }}
+					</div>
+					<div class="large-8 columns">
+						{{ register_form.username(type="text") }}
+						<p class="small">Allowed characters: letters, numbers, dashes, underscores</p>
+					</div>
+				</div>
+				<div class="row">
+					<div class="large-4 columns">
+						{{ register_form.password.label }}
+					</div>
+					<div class="large-8 columns">
+						{{ register_form.password(type="password") }}
+						<p class="small">Minimum 8 characters</p>
+					</div>
+				</div>
+				<div class="row">
+					<div class="large-4 columns">
+						{{ register_form.password2.label }}
+					</div>
+					<div class="large-8 columns">
+						{{ register_form.password2(type="password") }}
+						<p class="small">Repeat for verification</p>
+					</div>
+				</div>
+				<div class="row">
+					<div class="large-4 columns">
+						{{ register_form.email.label }}
+					</div>
+					<div class="large-8 columns">
+						{{ register_form.email(type="text") }}
+						<p class="small">Will be used for <a href="http://gravatar.com" target="_blank">Gravatar</a>.
+						</p>
+					</div>
+				</div>
+				{{ register_form.captcha }}
+				<br/>
+
+				<div class="row">
+					<div class="large-6 columns">
+						<input type="submit" class="button submit" value="Register">
+					</div>
+				</div>
+			</form>
+			{% else %}
+			<h4>Step 2</h4>
+
+			{% for field in gamescom_form.errors %}
+			{% for error in gamescom_form.errors[field] %}
+			<div data-alert class="alert-box success radius">
+				{{error}}
+			</div>
+			{% endfor %}
+			{% endfor %}
+
+			<form action="{{ url_for('gamescom') }}" method="post" class="gamescom">
+				{{ gamescom_form.hidden_tag() }}
+				<div class="row">
+					<div class="large-4 columns">
+						{{ gamescom_form.title.label }}
+					</div>
+					<div class="large-8 columns">
+						{{ gamescom_form.title(type="text") }}
+						<p class="small">E.g. Mr, Ms, Mx, ...</p>
+					</div>
+				</div>
+				<div class="row">
+					<div class="large-4 columns">
+						{{ gamescom_form.real_name.label }}
+					</div>
+					<div class="large-8 columns">
+						{{ gamescom_form.real_name(type="text") }}
+						<p class="small">Allowed characters: letters</p>
+					</div>
+				</div>
+				<div class="row">
+					<div class="large-4 columns">
+						{{ gamescom_form.city.label }}
+					</div>
+					<div class="large-8 columns">
+						{{ gamescom_form.city(type="text") }}
+						<p class="small">Allowed characters: letters</p>
+					</div>
+				</div>
+				<div class="row">
+					<div class="large-4 columns">
+						{{ gamescom_form.country.label }}
+					</div>
+					<div class="large-8 columns">
+						{{ gamescom_form.country(type="text") }}
+						<p class="small">Allowed characters: letters</p>
+					</div>
+				</div>
+				<div class="row">
+					<div class="large-4 columns">
+						{{ gamescom_form.job_title.label }}
+					</div>
+					<div class="large-8 columns">
+						{{ gamescom_form.job_title(type="text") }}
+						<p class="small">E.g. Student, Developer, Artist, ...</p>
+					</div>
+				</div>
+				<div class="row">
+					<div class="large-4 columns">
+						{{ gamescom_form.website.label }}
+					</div>
+					<div class="large-8 columns">
+						{{ gamescom_form.website(type="text") }}
+						<p class="small">URL to your website</p>
+					</div>
+				</div>
+				<div class="row">
+					<div class="large-4 columns">
+						{{ gamescom_form.experience.label }}
+					</div>
+					<div class="large-8 columns">
+						{{ gamescom_form.experience(type="text") }}
+						<p class="small">Please write something about your past Jam experiences (if you have any)</p>
+					</div>
+				</div>
+				<div class="row">
+					<div class="large-4 columns">
+						{{ gamescom_form.reason.label }}
+					</div>
+					<div class="large-8 columns">
+						{{ gamescom_form.reason(type="text") }}
+						<p class="small">Please write about why you want to attend the Jam</p>
+					</div>
+				</div>
+				<div class="row">
+					<h3>Legal</h3>
+
+					<div class="large-10">
+						{{ gamescom_form.age(style="max-width:20px;max-height:14px;") }} {{ gamescom_form.age.label.text }}
+						<br/>
+						{{ gamescom_form.tac(style="max-width:20px;max-height:14px;") }}
+						<a href="{{ url_for('tac') }}" target="_blank">{{ gamescom_form.tac.label.text }}</a>
+					</div>
+				</div>
+				<div class="row">
+					<h3>GameDev Abilities</h3>
+
+					<div class="large-10">
+						{{ gamescom_form.ability_programmer(style="max-width:20px;max-height:14px;") }} {{ gamescom_form.ability_programmer.label.text }}
+						<br/>
+						{{ gamescom_form.ability_gamedesigner(style="max-width:20px;max-height:14px;") }} {{ gamescom_form.ability_gamedesigner.label.text }}
+						<br/>
+						{{ gamescom_form.ability_2dartist(style="max-width:20px;max-height:14px;") }} {{ gamescom_form.ability_2dartist.label.text }}
+						<br/>
+						{{ gamescom_form.ability_3dartist(style="max-width:20px;max-height:14px;") }} {{ gamescom_form.ability_3dartist.label.text }}
+						<br/>
+						{{ gamescom_form.ability_composer(style="max-width:20px;max-height:14px;") }} {{ gamescom_form.ability_composer.label.text }}
+						<br/>
+						{{ gamescom_form.ability_sounddesigner(style="max-width:20px;max-height:14px;") }} {{ gamescom_form.ability_sounddesigner.label.text }}
+					</div>
+					<div class="field">
+						{{ gamescom_form.abilities_extra.label }} {{ gamescom_form.abilities_extra(style="width: 400px") }}
+						<div class="form-info">e.g. "Java, Löve, Pixel-Graphics, Rigging, Ambient music"</div>
+					</div>
+				</div>
+				<div class="row">
+					<h3>Travel Funding</h3>
+					{{ gamescom_form.travel_funding(style="max-width:20px;max-height:14px;", id="toggleTravelText") }} {{ gamescom_form.travel_funding.label.text }}
+				</div>
+				<span id="travelFundingText" style="display: none;">
+					<div class="row">
+						<div class="large-4 columns">
+							{{ gamescom_form.travel_funding_amount.label }}
+						</div>
+						<div class="large-3 columns">
+							{{ gamescom_form.travel_funding_amount(type="number", min="1", step="1") }}
+							<p class="small">Rough estimated amount in €</p>
+						</div>
+					</div>
+					<div class="row">
+						<div class="large-4 columns">
+							{{ gamescom_form.travel_funding_text.label }}
+						</div>
+						<div class="large-8 columns">
+							{{ gamescom_form.travel_funding_text(type="text") }}
+							<p class="small">Please write why you need travel funding</p>
+						</div>
+					</div>
+				</span>
+				{{ gamescom_form.captcha }}
+				<br/>
+
+				<div class="row">
+					<div class="large-6 columns">
+						<input type="submit" class="button submit" value="Apply">
+					</div>
+				</div>
+			</form>
+			{% endif %}
+		</div>
+	</div>
+
+</div>
+<script>
+	$(document).ready(function() {
+		$("#toggleTravelText").click(function() {
+			$("#travelFundingText").toggle();
+		});
+	});
+</script>
+
+<!-- 2 Column Stop -->
+{% endblock %}

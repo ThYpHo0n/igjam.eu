@@ -1,0 +1,212 @@
+{% extends "base.html" %}
+
+{% block title %}Home{% endblock %}
+
+{% block breadcrumb %}
+<div class="row">
+	<div class="large-12 columns">
+		<ul class="breadcrumb_menu">
+			<li class="active"><a href="{{ route_url('index') }}">Home</a></li>
+		</ul>
+	</div>
+</div>
+{% endblock %}
+
+{% block content %}
+{% set counting = false %}
+{% for jam in jams if jam.start_time < current_datetime < jam.end_time and not counting %}
+{% set counting = true %}
+{% block head %}
+<link href='//fonts.googleapis.com/css?family=Wallpoet&v2' rel='stylesheet' type='text/css'>
+{% endblock %}
+<a href="{{ route_url_param('countdown', jam_slug = jam.slug) }}">
+	{% set diff = jam.end_time - current_datetime %}
+	<div class="home-countdown" time="{{ jam.end_time }}">
+		<div class="text">{{ jam.title }} ends in</div>
+		<div class="time">{{ diff | countdowndelta }}</div>
+	</div>
+</a>
+{% endfor %}
+
+<!-- Banner -->
+<div class="row top-banner">
+
+	<!-- green Box -->
+	<div class="large-8 columns">
+		<div class="green">
+			<h1>What is a Game Jam?</h1>
+
+			<p class="subline"><span style="color: #65E9C2;">Innovation.</span>
+				<span style="color: rgba(24, 234, 132, 1);">Collaboration.</span>
+				<span style="color: #3D896E;">Experimentation.</span></p>
+
+			<p>A game jam is an event during which all participants <b>create
+				games</b> according to a provided theme <b>within a short amount of time</b>
+				(usually two days). <b>Anybody can participate</b>, experienced or newbie, flash developer or
+				C hacker.</p>
+
+			<p class="cross-links"><a href="{{ route_url('rules') }}">Our Rules</a> |
+				<a href="{{ route_url('faq') }}">Our FAQ</a></p>
+		</div>
+	</div>
+	{% if current_jam %}
+	<div class="large-4 columns">
+		<a href="{{ current_jam.url() }}">
+			<div class="next_gamejam_box opacityfade">
+				<p>
+					<span class="next">next</span><br>
+					<span class="gamejam">Game Jam</span><br>
+					<span class="more">more info</span><br>
+					<span class="here">here</span>
+				</p>
+			</div>
+		</a>
+	</div>
+	{% endif %}
+</div>
+
+<!-- 2 Cols -->
+<div class="row">
+	<!-- left Col -->
+	<div class="large-8 columns">
+		<h1 class="centered">Game Jam News</h1>
+
+		<ul class="block-grid large-block-grid-2">
+
+			{% for entry in news %}
+			<!-- News Item -->
+			<li>
+				<div class="news-list-item">
+					<a href="{{ url_for('news_show', news_id = entry.id) }}">
+						{% for term in entry.terms if term.taxonomy == "category" %}
+						<div class="news-related-rubrik">{{term.name}}</div>
+						ToDo: LIMIT the result to 1 entry
+						{% endfor %}
+
+						{% if entry.thumbnail %}
+						{% for key, value in entry.thumbnail.iteritems() if key == "thumbnail" %}
+						<img class="news-related-rubrik-image opacityfade" src="{{ value }}">
+						{% endfor %}
+						{% else %}
+						<img class="news-related-rubrik-image opacityfade" src="{{ static_url('DummyContent/dummy-news-related2.jpg') }}">
+						{% endif %}
+						<h3>{{entry.title}}</h3>
+
+						<p class="date">From {{entry.date.strftime('%d.%m.%Y')}} </p>
+						<p>{{entry.content|striptags|truncate(120)}}</p>
+					</a>
+				</div>
+			</li>
+			{% endfor %}
+		</ul>
+
+		<!-- Big Button -->
+		<div class="row">
+			<div class="large-offset-3 large-6 columns">
+				<a href="{{ url_for('news') }}" class="button big">All News</a>
+			</div>
+		</div>
+	</div>
+
+	<!-- right Col -->
+	<div class="large-4 columns">
+		<h3>Video</h3>
+		<iframe width="311" height="175" src="//www.youtube.com/embed/GDx6WXpvl1o" frameborder="0" allowfullscreen></iframe>
+	</div>
+
+	<!--
+					<div class="large-4 columns">
+						<h3>Video</h3>
+						<iframe width="311" height="175" src="//www.youtube.com/embed/GDx6WXpvl1o" frameborder="0" allowfullscreen></iframe>
+
+							<h3>Gallery</h3>
+							<ul class="block-grid large-block-grid-3">
+								<li><img src="http://lorempixel.com/180/160/"></li>
+								<li><img src="http://lorempixel.com/180/160/"></li>
+								<li><img src="http://lorempixel.com/180/160/"></li>
+								<li><img src="http://lorempixel.com/180/160/"></li>
+								<li><img src="http://lorempixel.com/180/160/"></li>
+								<li><img src="http://lorempixel.com/180/160/"></li>
+							</ul>
+					</div>
+					-->
+
+</div>
+
+<!-- Best of Games Start -->
+<div id="best-of-games">
+
+	<!-- Headline -->
+	<div class="row">
+		<div class="large-12 columns">
+			<h2>Best of Games</h2>
+		</div>
+	</div>
+
+	<!-- 4 Column Teaser -->
+	<div class="row four-column-teaser">
+		{% for game in games %}
+		<div class="large-3 columns">
+			<a href="{{ url_for('show_games', game_slug=game.slug) }}">
+				{% if game.url %}
+				<img style="min-width: 200px; min-height: 180px;" src="{{ game.url }}" class="opacityfade">
+				{% else %}
+				<img style="min-width: 200px; min-height: 180px;" src="{{ url_for('show_game_screenshot', id = game.screenshotId) }}" class="opacityfade">
+				{% endif %}
+				<h3>{{ game.title }}</h3>
+			</a>
+		</div>
+		{% endfor %}
+	</div>
+
+	<!-- Big Button -->
+	<div class="row">
+		<div class="large-offset-4 large-4 columns">
+			<a href="{{ url_for('games', page=1) }}" class="button big">All Games</a>
+		</div>
+	</div>
+
+</div>
+<!-- Best of Games Stop -->
+<!--
+<div id="last-gamjams">
+
+	<div class="row">
+		<div class="large-12 columns">
+			<h2>Last Game Jams</h2>
+		</div>
+	</div>
+
+
+	<div class="row">
+		<div class="large-12 columns three-column-teaser nogap">
+			<div class="large-4 columns">
+				<a href="#"><img src="DummyContent/dummy-index-gamejam1.jpg" class="opacityfade"></a>
+			</div>
+			<div class="large-4 columns">
+				<a href="#"><img src="DummyContent/dummy-index-gamejam2.jpg" class="opacityfade"></a>
+			</div>
+			<div class="large-4 columns">
+				<a href="#"><img src="DummyContent/dummy-index-gamejam3.jpg" class="opacityfade"></a>
+			</div>
+			<div class="large-4 columns">
+				<a href="#"><img src="DummyContent/dummy-index-gamejam4.jpg" class="opacityfade"></a>
+			</div>
+			<div class="large-4 columns">
+				<a href="#"><img src="DummyContent/dummy-index-gamejam5.jpg" class="opacityfade"></a>
+			</div>
+			<div class="large-4 columns">
+				<a href="#"><img src="DummyContent/dummy-index-gamejam6.jpg" class="opacityfade"></a>
+			</div>
+		</div>
+	</div>
+	-->
+
+</div>
+<!-- Last GameJams Stop -->
+
+</section>
+<!-- Content Stop -->
+
+{% endblock %}
+

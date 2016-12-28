@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block title %}Home{% endblock %}
+
+{% block breadcrumb %}
+<div class="row ">
+	<div class="small-12 columns">
+		<ul class="breadcrumb_menu">
+			<li class="active"><a href="{{ route_url('index') }}">Home</a></li>
+		</ul>
+	</div>
+</div>
+{% endblock %}
+
+{% block content %}
+{% set counting = false %}
+{% for jam in jams if jam.start_time < current_datetime < jam.end_time and not counting %}
+{% set counting = true %}
+{% block head %}
+<link href='//fonts.googleapis.com/css?family=Wallpoet&v2' rel='stylesheet' type='text/css'>
+{% endblock %}
+<a href="{{ route_url('countdown', jam_slug = jam.slug) }}">
+	{% set diff = jam.end_time - current_datetime %}
+	<div class="home-countdown" time="{{ jam.end_time }}">
+		<div class="text">{{ jam.title }} ends in</div>
+		<div class="time">{{ diff | countdowndelta }}</div>
+	</div>
+</a>
+{% endfor %}
+
+<!-- Banner -->
+<div class="row top-banner">
+	<!-- green Box -->
+	<div class="large-8 columns">
+		<div class="space">
+			<h1 style="font-size: 2em">The Winners of the IGJam 2016</h1>
+			<img src="https://dev.gamejam.innogames.de/wp-content/uploads/2016/08/IMG_7333.jpg"/>
+			<p style="color: white;">Wow, what a blast! The first IGJam at gamescom is over and it was a blast! Thanks to all of you for your participation in making it as awesome as it was.</p>
+			<br>
+			<p style="color: white;">Overall we brought together 180 jammers from 27 nations to create a total of 39 astonishing games. This makes our event the largest game jam in trade show history. One of the major highlights was the massive award show at the teamspeak stage.</p>
+			<br>
+			<p style="color: white"><a href="{{ route_url_param('news_show', news_id = '75') }}">[more]</a></p><br>
+		</div>
+	</div>
+	<div class="large-4 columns">
+		<h3>Sponsors & Partner</h3>
+		<div class="sponsors" style="padding: 0px 0px 1px 1px">
+			<a href="http://www.intelcapital.com/advantage/diversity-fund.html"><img height="100%" src="{{ static_url('img/gamescom/01_Intel.png') }}" alt="Intel" style="padding: 1px 1px"></a>
+			<a href="http://www.biu-online.de/"><img src="{{ static_url('img/gamescom/02_BIU.png') }}" alt="BIU"></a> <br>
+			<a href="http://www.indiearenabooth.de/"><img src="{{ static_url('img/gamescom/03_IndieArena.png') }}" alt="IndieArena"></a>
+			<br>
+			<a href="http://www.gamasutra.com/"><img src="{{ static_url('img/gamescom/04_Gamasutra.png') }}" alt="Gamasutra"></a> <br><br>
+			<a href="https://www.defold.com/"><img src="{{ static_url('img/gamescom/07_Defold.png') }}" alt="Defold"></a> <br><br>
+			<a href="https://www.kickstarter.com/"><img style="max-width: 311px" src="{{ static_url('img/gamescom/05_Kickstarter.png') }}" alt="Kickstarter"></a><br><br>
+			<a href="http://amaze-berlin.de/"><img style="max-width: 311px;" src="{{ static_url('img/gamescom/06_Amaze.png') }}" alt="Kickstarter"></a>
+			<br>
+		</div>
+		<h3>Video</h3>
+		<iframe width="311" height="175" src="//www.youtube.com/embed/Ska8e5DjshE" frameborder="0" allowfullscreen></iframe>
+	</div>
+</div>
+<!-- Content Stop -->
+
+{% endblock %}
+

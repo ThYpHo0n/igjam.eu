@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+
+{% block title %}Statistics{% endblock %}
+
+{% block content %}
+<h1>Statistics</h1>
+
+<div class="row-fluid">
+    <div class="span6">
+        <legend>General</legend>
+        <div class="box">
+            <div class="box-content">
+                <dl class="dl-horizontal">
+                    <dt>Total Jams</dt>
+                    <dd>{{ stats["total_jams"] }} jams</dd>
+
+                    <dt>Registered Users</dt>
+                    <dd>{{ stats["total_users"] }} users</dd>
+
+                    <dt>Average users per jam</dt>
+                    <dd>{{ "%.2f" % stats["average_users"] }} users per jam</dd>
+
+                    <dt>Most users per jam</dt>
+                    <dd>{{ stats["most_users_per_jam"] }} users
+                        {% if stats['most_users_jam'] %}
+                        in <a href="{{ stats['most_users_jam'].url() }}">{{ stats["most_users_jam"].title }}</a>
+                        {% endif %}
+                    </dd>
+
+                    <dt>Total Games</dt>
+                    <dd>{{ stats["total_games"] }} games</dd>
+
+                    <dt>Average games per jam</dt>
+                    <dd>{{ "%.2f" % stats["average_games"] }} games per jam</dd>
+
+                    <dt>Most games per jam</dt>
+                    <dd>{{ stats["most_games_per_jam"] }} games
+                        {% if stats['most_games_jam'] %}
+                        in <a href="{{ stats['most_games_jam'].url() }}">{{ stats["most_games_jam"].title }}</a>
+                        {% endif %}
+                    </dd>
+
+                    <dt>Average team size</dt>
+                    <dd>{{ "%.2f" % stats["average_team_size"] }} team members</dd>
+
+                    <dt>Biggest team</dt>
+                    <dd>{{ stats["biggest_team_size"] }} team members
+                        {% if stats['biggest_team_game'] %}
+                        made <a href="{{ stats['biggest_team_game'].url() }}">{{ stats["biggest_team_game"].title }}</a>
+                        {% endif %}
+                     </dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+    <div class="span6">
+        <legend>Hall of fame</legend>
+        <div class="box">
+            <div class="box-content">
+                <dl>
+                    <dt>Best rated games</dt>
+                        <dd>
+                        {% if not stats['best_games'] or stats["best_games"][0].getTotalScore() == 0 %}
+                            There are no rated games yet.
+                        {% else %}
+                        {% for n in [0,1,2] if stats['best_games'][n] %}
+                            <div style="margin-bottom: 5px;">
+                                Score {{ "%.2f" % stats["best_games"][n].getTotalScore() }}:
+                                <a href="{{ stats['best_games'][n].url() }}">
+                                    {{ stats["best_games"][n].jam.title }} &raquo;
+                                    {{ stats["best_games"][n].title }}
+                                </a>
+                            </div>
+                        {% endfor %}
+                        {% endif %}
+                        </dd>
+                    <dt>User with most games</dt>
+                        <dd>
+                        {% if not stats['user_most_games'] or not stats["user_most_games"][0].games %}
+                            Nobody has games yet.
+                        {% else %}
+                        {% for n in [0,1,2] if stats['user_most_games'][n] %}
+                        <div style="margin-bottom: 5px;">
+                            {{ stats["user_most_games"][n].getLink() }}
+                            with {{ stats["user_most_games"][n].games | length }} games
+                        </div>
+                        {% endfor %}
+                        {% endif %}
+                        </dd>
+                    </dl>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

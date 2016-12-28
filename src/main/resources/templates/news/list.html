@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block title %}News{% endblock %}
+
+{% block breadcrumb %}
+<div class="row">
+	<div class="large-12 columns">
+		<ul class="breadcrumb_menu">
+			<li><a href="{{ url_for('index') }}">Home</a></li>
+			<li class="active">News</li>
+		</ul>
+	</div>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+	<div class="large-12 columns news-list">
+
+		{% for entry in news %}
+		<div class="related-news-list-item">
+			<a href="{{ url_for('news_show', news_id = entry.id) }}">
+				<div class="row news-list-item">
+					<div class="large-6 columns">
+						{% if entry.rubrik %}
+						<div class="news-related-rubrik">{{entry.rubrik}}</div>
+						{% else %}
+						<div class="news-related-rubrik">other</div>
+						{% endif %}
+
+						{% if entry.thumbpic %}
+						<img class="news-related-rubrik-image opacityfade" src="{{ entry.thumbpic }}"/>
+						{% else %}
+						<img class="news-related-rubrik-image opacityfade" src="{{ url_for('static', filename='DummyContent/dummy-news-related2.jpg') }}"/>
+						{% endif %}
+					</div>
+					<div class="large-6 columns">
+						<h3>{{ entry.title }}</h3>
+
+						<p class="date">From {{entry.date.strftime('%d.%m.%Y')}} </p>
+						{% if entry.content %}
+						<p>{{entry.content|striptags|truncate(120)}}</p>
+						{% else %}
+						<p>Read more...</p>
+						{% endif %}
+					</div>
+				</div>
+			</a>
+		</div>
+		{% endfor %}
+	</div>
+	<!-- Left Column Stop -->
+</div>
+
+{% endblock %}

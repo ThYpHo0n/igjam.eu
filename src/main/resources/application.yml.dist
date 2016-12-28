@@ -1,5 +1,11 @@
 spring:
   profiles:
     active: dev
+  thymeleaf:
+    mode: XHTML
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/iggj
+    username: change
+    password: me
 server:
   port: 8080

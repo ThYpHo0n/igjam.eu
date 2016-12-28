@@ -5,16 +5,16 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 	<title>{% block title %}{% endblock %} « IGJam.eu</title>
 
-	<link rel="stylesheet" href="{{ url_for('static', filename='css/foundation.min.css') }}"/>
-	<link rel="stylesheet" href="{{ url_for('static', filename='css/layout.css') }}"/>
-	<link rel="stylesheet" href="{{ url_for('static', filename='css/navi.css') }}"/>
-	<link rel="stylesheet" href="{{ url_for('static', filename='css/texte.css') }}"/>
-	<link rel="stylesheet" href="{{ url_for('static', filename='css/contentelemente.css') }}"/>
-	<link rel="stylesheet" href="{{ url_for('static', filename='css/gamescom.css') }}"/>
-	<script src="{{ url_for('static', filename='js/vendor/modernizr.js') }}"></script>
-	<script src="{{ url_for('static', filename='js/vendor/jquery.js') }}"></script>
+	<link rel="stylesheet" href="{{ href('css/foundation.min.css') }}"/>
+	<link rel="stylesheet" href="{{ href('css/layout.css') }}"/>
+	<link rel="stylesheet" href="{{ href('css/navi.css') }}"/>
+	<link rel="stylesheet" href="{{ href('css/texte.css') }}"/>
+	<link rel="stylesheet" href="{{ href('css/contentelemente.css') }}"/>
+	<link rel="stylesheet" href="{{ href('css/gamescom.css') }}"/>
+	<script src="{{ href('js/vendor/modernizr.js') }}"></script>
+	<script src="{{ href('js/vendor/jquery.js') }}"></script>
 
-	<link rel="icon" href="{{ url_for('static', filename='img/gamescom/favicon.ico') }}" type="image/x-icon">
+	<link rel="icon" href="{{ href('img/gamescom/favicon.ico') }}" type="image/x-icon">
 
 	{% block head %}{% endblock %}
 </head>
@@ -28,21 +28,21 @@
 
 		<div class="small-6 columns right">
 			<!-- Login -->
-			{% if current_user.is_anonymous == True %}
-			<a href="{{ url_for('login') }}" class="button login">Login</a>
+			{% if session.isAnonymous() == true %}
+			<a href="{{ href('/login') }}" class="button login">Login</a>
 
 			<p class="logout_headline">&nbsp;</p>
 			{% else %}
 			{% if current_user.invitiation %}
-			<a href="{{ url_for('invitations') }}" class="button login">{{ current_user.invitation | length }}
+			<a href="{{ href('/invitations') }}" class="button login">{{ current_user.invitation | length }}
 				<i class="icon-envelope"></i></a>
 			{% endif %}
-			<a href="{{ url_for('profile') }}" class="button login" id="account">
-				<img class="avatar" src="{{ current_user.avatar }}" width="16" height="16"/>
+			<a href="{{ href('/profile') }}" class="button login" id="account">
+				<img class="avatar" src="{{ session.avatar }}" width="16" height="16"/>
 				{{ current_user.username }} <br/>
 			</a>
 
-			<p class="logout_headline"><a href="{{ url_for('logout') }}">Logout</a></p>
+			<p class="logout_headline"><a href="{{ href('/logout') }}">Logout</a></p>
 			{% endif %}
 			<!-- Follow us on -->
 			<p class="socialmedia_headline">Follow us on</p>
@@ -58,11 +58,11 @@
 
 <nav class="row hide-for-large-up">
 	<div class="icon-bar five-up">
-		<a class="item" href="{{ url_for('index') }}"><label>Home</label></a></li>
-		<a class="item" href="{{ url_for('news') }}"><label>News</label></a>
-		<a class="item" href="{{ url_for('rules') }}"><label>Rules</label></a>
-		<a class="item" href="{{ url_for('faq') }}"><label>FAQ</label></a>
-		<a class="item" href="{{ url_for('about') }}"><label>About</label></a>
+		<a class="item" href="{{ href('index') }}"><label>Home</label></a></li>
+		<a class="item" href="{{ href('news') }}"><label>News</label></a>
+		<a class="item" href="{{ href('rules') }}"><label>Rules</label></a>
+		<a class="item" href="{{ href('faq') }}"><label>FAQ</label></a>
+		<a class="item" href="{{ href('about') }}"><label>About</label></a>
 	</div>
 </nav>
 
@@ -72,51 +72,51 @@
 		<div class="large-12 columns nav-content">
 			<ul class="main_menu">
 				{% if request.endpoint == "index" %}
-				<li class="active"><a href="{{ url_for('index') }}">Home</a></li>
+				<li class="active"><a href="{{ href('index') }}">Home</a></li>
 				{% else %}
-				<li><a href="{{ url_for('index') }}">Home</a></li>
+				<li><a href="{{ href('index') }}">Home</a></li>
 				{% endif %}
 
 				{% if request.endpoint == "news" %}
-				<li class="active"><a href="{{ url_for('news') }}">News</a></li>
+				<li class="active"><a href="{{ href('news') }}">News</a></li>
 				{% else %}
-				<li><a href="{{ url_for('news') }}">News</a></li>
+				<li><a href="{{ href('news') }}">News</a></li>
 				{% endif %}
 
 				{% if request.endpoint == "rules" %}
-				<li class="active"><a href="{{ url_for('rules') }}">Rules</a></li>
+				<li class="active"><a href="{{ href('rules') }}">Rules</a></li>
 				{% else %}
-				<li><a href="{{ url_for('rules') }}">Rules</a></li>
+				<li><a href="{{ href('rules') }}">Rules</a></li>
 				{% endif %}
 
 				{% if request.endpoint == "faq" %}
-				<li class="active"><a href="{{ url_for('faq') }}">FAQ</a></li>
+				<li class="active"><a href="{{ href('faq') }}">FAQ</a></li>
 				{% else %}
-				<li><a href="{{ url_for('faq') }}">FAQ</a></li>
+				<li><a href="{{ href('faq') }}">FAQ</a></li>
 				{% endif %}
 
 				{% if request.endpoint == "jams" %}
-				<li class="active"><a href="{{ url_for('jams') }}">Game Jams</a></li>
+				<li class="active"><a href="{{ href('jams') }}">Game Jams</a></li>
 				{% else %}
-				<li><a href="{{ url_for('jams') }}">Game Jams</a></li>
+				<li><a href="{{ href('jams') }}">Game Jams</a></li>
 				{% endif %}
 
 				{% if request.endpoint == "games" %}
-				<li class="active"><a href="{{ url_for('games', page=1) }}">Games</a></li>
+				<li class="active"><a href="{{ href('games') }}">Games</a></li>
 				{% else %}
-				<li><a href="{{ url_for('games', page=1) }}">Games</a></li>
+				<li><a href="{{ href('games') }}">Games</a></li>
 				{% endif %}
 
 				{% if request.endpoint == "gamescom" %}
-				<li class="active"><a href="{{ url_for('gamescom') }}">Gamescom</a></li>
+				<li class="active"><a href="{{ href('gamescom') }}">Gamescom</a></li>
 				{% else %}
-				<li><a href="{{ url_for('gamescom') }}">Gamescom</a></li>
+				<li><a href="{{ href('gamescom') }}">Gamescom</a></li>
 				{% endif %}
 
 				{% if request.endpoint == "about" %}
-				<li class="active"><a href="{{ url_for('about') }}">About</a></li>
+				<li class="active"><a href="{{ href('about') }}">About</a></li>
 				{% else %}
-				<li><a href="{{ url_for('about') }}">About</a></li>
+				<li><a href="{{ href('about') }}">About</a></li>
 				{% endif %}
 			</ul>
 		</div>
@@ -152,7 +152,7 @@
 
 {% include "footer.html" %}
 
-<script src="{{ url_for('static', filename='js/foundation.min.js') }}"></script>
+<script src="{{ href('js/foundation.min.js') }}"></script>
 <script>
 	$(document).foundation();
 </script>

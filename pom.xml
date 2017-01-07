@@ -83,6 +83,11 @@
 			<artifactId>raven-logback</artifactId>
 			<version>${raven-logback.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>net.bican</groupId>
+			<artifactId>jwordpress</artifactId>
+			<version>0.6.5</version>
+		</dependency>
 		<!--                       -->
 		<!-- Internal Dependencies -->
 		<!--                       -->
@@ -142,7 +147,8 @@
 								<data>
 									<type>link</type>
 									<linkName>/opt/crm-${project.artifactId}/current</linkName>
-									<linkTarget>/opt/crm-${project.artifactId}/${project.build.finalName}.jar</linkTarget>
+									<linkTarget>/opt/crm-${project.artifactId}/${project.build.finalName}.jar
+									</linkTarget>
 									<symlink>true</symlink>
 									<mapper>
 										<type>perm</type>

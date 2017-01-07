@@ -9,3 +9,9 @@ spring:
     password: me
 server:
   port: 8080
+pebble:
+  suffix:
+wordpress:
+  username: user
+  password: topSecret
+  url: localhost
